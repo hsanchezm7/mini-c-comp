@@ -26,7 +26,7 @@
    the parser skeleton itself, you may (at your option) remove this
    special exception, which will cause the skeleton and the resulting
    Bison output files to be licensed under the GNU General Public
-   License without this special exception.
+   License without this special exception. Test.
 
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
