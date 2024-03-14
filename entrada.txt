@@ -1,0 +1,10 @@
+main() { 
+    // Ejemplo de calculadora
+    x = 53;
+    y = 10;
+    z = x*y - 5;
+    /* comentario
+    multi
+    linea */
+    ##$
+}
