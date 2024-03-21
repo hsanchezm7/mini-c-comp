@@ -6,35 +6,56 @@
     int main();
     extern int yylineno;
     extern char *yytext;
-
 %}
 
+%union{
+    int entero;
+    char *cadena;
+}
 
-%token ENTE SUMA MULT PARI PARD ASIG DIVI
+
+%token PARI PARD PYCO SUMA MULT ASIG DIVI REST
+%token <entero> ENTE
+%token <cadena> IDEN
+%left SUMA REST
+%left MULT DIVI
+%left UMENOS
+%type <entero> expresion entrada
+
 
 %%
 
-R : E ASIG 		    { printf("Resultado=??\n"); }
+entrada : 	              {$$=1;}
+	| entrada {printf("Expr n. %d: ",$1);} linea        {$$=$1+1;}
+        ;
 
-E : E SUMA T		{ $$ = $1 + $3; }
-    | T			    { printf("T\n"); }
-    ;
+linea : expresion '\n' {printf("%d\n",$1);} 
+	| IDEN ASIG expresion '\n' {printf("La variable %s toma el valor %d\n",$1,$3);}
+	| error '\n'
+        ;
 
-T : T MULT F		{ $$ = $1 * $3; }
-    | F			    { printf("F\n"); }
-    ;
+expresion : expresion SUMA termino {$$ = $1 + $3; }
+          | expresion REST termino {$$ = $1 - $3;}
+          | expresion MULT termino {$$ = $1 * $3;}
+       	  | expresion DIVI termino {$$ = $1 / $3;}
+          | PARI termino PARD {$$ = $2;}
+	      | REST termino %prec UMENOS {$$=-$2;} 
+          | ENTE ;
 
-F : PARI E PARD		{ printf("(E)"); }
-    | ENTE			{ printf("E"); }
-    ;
+termino : termino MULT factor {$$=$1*$3;}
+| termino DIVI factor {$$=$1/$3;}
+| factor
+
+;
+
+factor : PARI expresion PARD { $$ = $2; }
+       | REST factor { $$ =- $2; }
+       | ENTE;
 
 %%
 
 void yyerror() {
     printf("Error en la línea %d: %s \n", yylineno, yytext);
-}
-
-int yylex() {
 }
 
 int main() {
