@@ -5,6 +5,7 @@
     #include "lexico.h"
     #include <stdio.h>
     int contador_errores = 0;
+    void error();
     //      "/*"([^*]|[*]+[^*/])*[*]*"*/"          { return MULTI; }
 %}
 
@@ -39,13 +40,13 @@ ERR [^a-zA-z_0-9+\-*/=;() \t\r\n]
 "/"                 { return DIVI; }
 
 
-{D}+                { yylval=atoi(yytext); return ENTE; }
+{D}+                { yylval.entero=atoi(yytext); return ENTE; }
 
 "//"(.*)\n          { return COMENT; }
 ";"                 { return PYCO; }
 ","                 { return COMA; }
 
-"/*"(.|\n)*"*/"     { return MULT; }
+"/*"(.|\n)*"*/"     { return MULTICOMENT; }
 
 "("                 { return PARI; }
 ")"                 { return PARD; }
@@ -56,3 +57,8 @@ ERR [^a-zA-z_0-9+\-*/=;() \t\r\n]
 {ERR}+              { printf("Error en la línea %d: %s \n", yylineno, yytext); }
 
 %%
+
+void error()
+{
+    printf("Error en el carácter %s\n",yytext);
+}

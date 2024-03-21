@@ -16,7 +16,7 @@
 #define CORI 14
 #define CORD 15
 #define MAIN 16
-#define MULT 17
+#define MULTICOMENT 17
 #define VAR 18
 #define CONST 19
 #define IF 20

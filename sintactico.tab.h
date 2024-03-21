@@ -26,7 +26,7 @@
    the parser skeleton itself, you may (at your option) remove this
    special exception, which will cause the skeleton and the resulting
    Bison output files to be licensed under the GNU General Public
-   License without this special exception. Test.
+   License without this special exception.
 
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
@@ -54,20 +54,34 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    ENTE = 258,                    /* ENTE  */
-    SUMA = 259,                    /* SUMA  */
-    MULT = 260,                    /* MULT  */
-    PARI = 261,                    /* PARI  */
-    PARD = 262,                    /* PARD  */
+    PARI = 258,                    /* PARI  */
+    PARD = 259,                    /* PARD  */
+    PYCO = 260,                    /* PYCO  */
+    SUMA = 261,                    /* SUMA  */
+    MULT = 262,                    /* MULT  */
     ASIG = 263,                    /* ASIG  */
-    DIVI = 264                     /* DIVI  */
+    DIVI = 264,                    /* DIVI  */
+    REST = 265,                    /* REST  */
+    ENTE = 266,                    /* ENTE  */
+    IDEN = 267,                    /* IDEN  */
+    UMENOS = 268                   /* UMENOS  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 11 "sintactico.y"
+
+    int entero;
+    char *cadena;
+
+#line 82 "sintactico.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
