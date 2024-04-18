@@ -2,23 +2,16 @@
 
 %{
     #include "sintactico.tab.h"
-    /* edumart@um.es
-       El problema principal está aquí: lexico.h define códigos de tokens que
-       chafan los códigos de tokens que se definen en el fichero de cabecera
-       sintactico.tab.h, que contiene los códigos de token buenos (los que genera bison)
-       #include "lexico.h"
-    */
     #include <stdio.h>
     int contador_errores = 0;
     void error();
-    //      "/*"([^*]|[*]+[^*/])*[*]*"*/"          { return MULTI; }
 %}
 
 /* Macros Expresiones regulares */
 D   [0-9]
 L   [a-zA-Z_]
 E   {D}+
-ERR [^a-zA-Z_0-9+\-*\=;() \t\r\n]
+ERR [^a-zA-Z_0-9+\-*\=; ()\t\r\n]
 
 /* Opciones Flex */
 %option yylineno

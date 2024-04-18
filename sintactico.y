@@ -80,7 +80,7 @@ expression : ID     {}
 
 %%
 
-/* esto es de una clase que no se donde va
+/* 
 NUM {
 lisatC codigo = creaLC();
 Operacion oper;
