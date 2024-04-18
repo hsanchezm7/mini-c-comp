@@ -2,7 +2,12 @@
 
 %{
     #include "sintactico.tab.h"
-    #include "lexico.h"
+    /* edumart@um.es
+       El problema principal está aquí: lexico.h define códigos de tokens que
+       chafan los códigos de tokens que se definen en el fichero de cabecera
+       sintactico.tab.h, que contiene los códigos de token buenos (los que genera bison)
+       #include "lexico.h"
+    */
     #include <stdio.h>
     int contador_errores = 0;
     void error();
@@ -11,50 +16,56 @@
 
 /* Macros Expresiones regulares */
 D   [0-9]
-L   [a-zA-z]
-ERR [^a-zA-z_0-9+\-*/=;() \t\r\n]
+L   [a-zA-Z_]
+E   {D}+
+ERR [^a-zA-Z_0-9+\-*\=;() \t\r\n]
 
 /* Opciones Flex */
 %option yylineno
 
+/* Expresiones regulares */
 %%
+"//"(.*)\n                           ;
+"/∗"([^∗]|[∗]+[^∗/])∗[∗]∗"∗/"        ;
 
- /* Expresiones regulares */
+"var"                       { return VAR; }
+"const"                     { return CONST; }
 
-"main"              { return MAIN; }
-"print"             { return PRINT; }
-"var"               { return VAR; }
-"const"             { return CONST; }
-"if"                { return IF; }
-"else"              { return ELSE; }
-"while"             { return WHILE; }
-"read"              { return READ; }
+"int"                       { return INT; }
+"string"                    { return STRING; }
+
+"read"                      { return READ; }
+"print"                     { return PRINT; }
+
+"if"                        { return IF; }
+"else"                      { return ELSE; }
+"while"                     { return WHILE; }
+
+"="                         { return ASIG; }
+"+"                         { return ADD; }
+"-"                         { return SUB; }
+"*"                         { return MUL; }
+"/"                         { return DIV; }
 
 
-{L}+                { return IDEN; }
-
-"="                 { return ASIG; }
-"+"                 { return SUMA; }
-"-"                 { return REST; }
-"*"                 { return MULT; }
-"/"                 { return DIVI; }
+{E}                         { 
+                                yylval.entero=atoi(yytext); 
+                                return ENTE; 
+                            }
 
 
-{D}+                { yylval.entero=atoi(yytext); return ENTE; }
+({L}|_)({L}|{D}|_)*         { return ID; }
 
-"//"(.*)\n          { return COMENT; }
-";"                 { return PYCO; }
-","                 { return COMA; }
+";"                         { return PYCO; }
+","                         { return COMA; }
 
-"/*"(.|\n)*"*/"     { return MULTICOMENT; }
+"("                         { return PARI; }
+")"                         { return PARD; }
 
-"("                 { return PARI; }
-")"                 { return PARD; }
+"{"                         { return CORI; }
+"}"                         { return CORD; }
 
-"{"                 { return CORI; }
-"}"                 { return CORD; }
-
-{ERR}+              { printf("Error en la línea %d: %s \n", yylineno, yytext); }
+{ERR}+                      { printf("Error léxico en la línea %d: %s \n", yylineno, yytext); }
 
 %%
 

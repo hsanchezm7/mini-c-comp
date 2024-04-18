@@ -1,12 +1,13 @@
 /* lexico.h */
 
-#define IDEN 1
+#define ID 1
 #define ASIG 2
-#define SUMA 3
-#define REST 4
-#define MULT 5
-#define DIVI 6
-#define ENTE 7
+#define ADD 3
+#define SUB 4
+#define MUL 5
+#define DIV 6
+#define INT 7
+#define STRING 24
 #define PYCO 8
 #define COMA 9
 #define PARI 10

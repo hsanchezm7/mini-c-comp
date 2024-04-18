@@ -2,7 +2,7 @@
 	#include "ListaSimbolos.h"
 	Lista tabSimb;
 	Tipo tipo;
-	int contCadenas=1;
+	int contCadenas=0;
 %)
 	
 program : { tabSimb=crealS(); } IDEN PARI PARD ALLAVE declarations statement_list CLLAVE { imprimirTS(tabSimb); liberaLS(tabSimb); }
