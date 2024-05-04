@@ -1,5 +1,5 @@
-miniC : lex.yy.c sintactico.tab.c
-	gcc lex.yy.c sintactico.tab.c -ll -o miniC
+miniC : lex.yy.c sintactico.tab.c listaCodigo.c listaSimbolos.c
+	gcc lex.yy.c sintactico.tab.c listaCodigo.c listaSimbolos.c -ll -o miniC
 
 lex.yy.c : sintactico.tab.h lexico.l
 	flex lexico.l

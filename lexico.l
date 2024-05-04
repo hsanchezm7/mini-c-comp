@@ -11,13 +11,14 @@
 D   [0-9]
 L   [a-zA-Z_]
 E   {D}+
-ERR [^a-zA-Z_0-9+\-*\=; ()\t\r\n]
+ERR [^a-zA-Z_0-9+\-*\=; ()\t\r\n,{}]
 
 /* Opciones Flex */
 %option yylineno
 
 /* Expresiones regulares */
 %%
+[ \n\t\r]+                          ;   
 "//"(.*)\n                           ;
 "/∗"([^∗]|[∗]+[^∗/])∗[∗]∗"∗/"        ;
 
@@ -25,7 +26,7 @@ ERR [^a-zA-Z_0-9+\-*\=; ()\t\r\n]
 "const"                     { return CONST; }
 
 "int"                       { return INT; }
-"string"                    { return STRING; }
+\"([^\"\n\r]|\\”)+\"         { return STRING; }
 
 "read"                      { return READ; }
 "print"                     { return PRINT; }
