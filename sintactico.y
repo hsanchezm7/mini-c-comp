@@ -3,29 +3,41 @@
     #include <stdio.h>
     #include <stdlib.h>
     #include <string.h>
-    #include "listaSimbolos.h"
+
+    /* Listas de código y de símbolos */
     #include "listaCodigo.h"
+    #include "listaSimbolos.h"
+
+    /* Opciones de Yacc */
     extern int yylex();
     extern int yylineno;  
     extern int errores_lexicos;  
     void yyerror(const char *msg);
+
+    /* Contadores de errores */
     int errores_sintacticos = 0;
+    int errores_semanticos = 0;
+
+    /* Estructuras de datos */
     Lista l;
     Tipo t;
+
+    /* Registros */
     char registros[10];
-    int contador_str = 0;
-    int errores_semanticos = 0;
+    
+    /* Otros */
     void imprimirLS();
     int analisis_ok();
     char *obtenerReg();
     void liberarReg(char *reg);
     void imprimirLC(ListaC codigo);
     int contadorEtiquetas=1;
+    int contador_str = 0;
     char *obtenerEtiqueta();
 %}
 
 %code requires {
-        #include "listaCodigo.h"
+    #include "listaCodigo.h"
 }
 
 /* TAD de la gramática */
@@ -84,38 +96,41 @@
 
 /* Reglas de producción */
 
-program : inicializar ID PARI PARD CORI declarations statement_list CORD  {
-                                                                                if (analisis_ok()){
-                                                                                        $$ = creaLC();
-                                                                                        concatenaLC($$, $6);
-                                                                                        concatenaLC($$, $7);
-                                                                                        liberaLC($6);
-                                                                                        liberaLC($7);
-                                                                                        imprimirLS();
-                                                                                        imprimirLC($$);
-                                                                                        liberaLS(l);
-                                                                                        liberaLC($$);
-                                                                                }
-                                                                        }
-        ;
-
-inicializar : %empty {
-                l = creaLS();
-                memset(registros, 0, 10);
-        }
-        ;
-
-declarations : declarations VAR { t = VARIABLE; } identifier_list PYCO {
-                                                                        if (analisis_ok()){
+program : inicializar ID PARI PARD CORI declarations statement_list CORD
+                                                                        {
+                                                                            if (analisis_ok()){
                                                                                 $$ = creaLC();
-                                                                                concatenaLC($$, $1);
-                                                                                concatenaLC($$, $4);
-                                                                                liberaLC($1);
-                                                                                liberaLC($4);
+                                                                                concatenaLC($$, $6);
+                                                                                concatenaLC($$, $7);
+                                                                                liberaLC($6);
+                                                                                liberaLC($7);
+                                                                                imprimirLS();
+                                                                                imprimirLC($$);
+                                                                                liberaLS(l);
+                                                                                liberaLC($$);
+                                                                            }
                                                                         }
-                                                                        
-                                                                }
-        | declarations CONST { t = CONSTANTE; } identifier_list PYCO {
+        ;
+
+inicializar : %empty 
+                    {
+                        l = creaLS();
+                        memset(registros, 0, 10);
+                    }
+            ;
+
+declarations : declarations VAR { t = VARIABLE; } identifier_list PYCO 
+                                                                    {
+                                                                        if (analisis_ok()){
+                                                                            $$ = creaLC();
+                                                                            concatenaLC($$, $1);
+                                                                            concatenaLC($$, $4);
+                                                                            liberaLC($1);
+                                                                            liberaLC($4);
+                                                                        }    
+                                                                    }
+             | declarations CONST { t = CONSTANTE; } identifier_list PYCO
+                                                                    {
                                                                         if (analisis_ok()){
                                                                                 $$ = creaLC();
                                                                                 concatenaLC($$, $1);
