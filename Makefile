@@ -10,5 +10,5 @@ sintactico.tab.h sintactico.tab.c: sintactico.y
 clean :
 	rm -f sintactico.tab.h sintactico.tab.c lex.yy.c miniC
 
-run: miniC prueba.txt
+run: miniC prueba.mc
 	./miniC prueba.mc > miniC.s

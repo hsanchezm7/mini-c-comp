@@ -84,19 +84,13 @@
 
 /* Reglas de producción */
 
-program :  inicializar ID PARI PARD CORI declarations statement_list CORD  {
+program : inicializar ID PARI PARD CORI declarations statement_list CORD  {
                                                                                 if (analisis_ok()){
                                                                                         $$ = creaLC();
                                                                                         concatenaLC($$, $6);
                                                                                         concatenaLC($$, $7);
                                                                                         liberaLC($6);
                                                                                         liberaLC($7);
-                                                                                        Operacion o;
-                                                                                        o.op = "jr";
-                                                                                        o.res = "$ra";
-                                                                                        o.arg1 = NULL;
-                                                                                        o.arg2 = NULL;
-                                                                                        insertaLC($$, finalLC($$), o);
                                                                                         imprimirLS();
                                                                                         imprimirLC($$);
                                                                                         liberaLS(l);
@@ -106,12 +100,12 @@ program :  inicializar ID PARI PARD CORI declarations statement_list CORD  {
         ;
 
 inicializar : %empty {
-        l = creaLS();
-        memset(registros, 0, 10);
+                l = creaLS();
+                memset(registros, 0, 10);
         }
         ;
 
-declarations : declarations VAR {t = VARIABLE; } identifier_list PYCO {
+declarations : declarations VAR { t = VARIABLE; } identifier_list PYCO {
                                                                         if (analisis_ok()){
                                                                                 $$ = creaLC();
                                                                                 concatenaLC($$, $1);
@@ -121,7 +115,7 @@ declarations : declarations VAR {t = VARIABLE; } identifier_list PYCO {
                                                                         }
                                                                         
                                                                 }
-        | declarations CONST { t = CONSTANTE; }identifier_list PYCO {
+        | declarations CONST { t = CONSTANTE; } identifier_list PYCO {
                                                                         if (analisis_ok()){
                                                                                 $$ = creaLC();
                                                                                 concatenaLC($$, $1);
