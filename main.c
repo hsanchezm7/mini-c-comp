@@ -6,7 +6,7 @@ extern int errores_sintacticos;
 extern int errores_lexicos;
 extern int errores_semanticos;
 
-int ok(){
+int numero_errores(){
     return (errores_sintacticos + errores_lexicos + errores_semanticos);
 }
 int main(int argc, char *argv[]){
@@ -19,9 +19,9 @@ int main(int argc, char *argv[]){
         printf("Error al abrir %s\n", argv[1]);
         exit(2);
     }
-    //Analizar sintacticamente
+/* Sintactico */
     yyparse();
-    int res = ok();
+    int res = numero_errores();
     if (res != 0){
         printf("Errores léxicos: %d\n", errores_lexicos);
         printf("Errores sintácticos: %d\n", errores_sintacticos);
