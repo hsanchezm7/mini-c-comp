@@ -163,7 +163,7 @@ identifier_list : asig      { if (analisis_ok()){
 asig : ID     {
                 PosicionLista p = buscaLS(l,$1);
                 if (p != finalLS(l)) {
-                        printf("Error en linea %d: identificador %s varias veces declarado\n", yylineno, $1);
+                        printf("Error en línea %d: identificador %s ya declarado\n", yylineno, $1);
                         errores_semanticos++;
                 }
                 else {
@@ -181,7 +181,7 @@ asig : ID     {
         | ID ASIG expression       {
                 PosicionLista p = buscaLS(l,$1);
                 if (p != finalLS(l)) {
-                        printf("Error en linea %d: identificador %s varias veces declarado\n", yylineno, $1);
+                        printf("Error en línea %d: identificador %s ya declarado\n", yylineno, $1);
                         errores_semanticos++;
                 }
                 else {
@@ -220,12 +220,12 @@ statement_list : statement_list  statement      { if (analisis_ok()){
 statement : ID ASIG expression PYCO    {
                                         PosicionLista p = buscaLS(l, $1);
                                         if (p == finalLS(l)){
-                                                printf("Error en linea %d: identificador %s no encontrado\n", yylineno, $1);
+                                                printf("Error en línea %d: identificador %s no encontrado\n", yylineno, $1);
                                                 errores_semanticos++;
                                         } else {
                                                 Simbolo aux = recuperaLS(l, p);
                                                 if (aux.tipo == CONSTANTE){
-                                                        printf("Error en linea %d: identificador %s = constante\n", yylineno, $1);
+                                                        printf("Error en línea %d: identificador %s = constante\n", yylineno, $1);
                                                         errores_semanticos++;  
                                                 }
                                         }
@@ -493,12 +493,12 @@ print_item : expression             {
 read_list : ID                    {
                                         PosicionLista p = buscaLS(l, $1);
                                         if (p == finalLS(l)){
-                                                printf("Error en linea %d: identificador %s no encontrado\n", yylineno, $1);
+                                                printf("Error en línea %d: identificador %s no encontrado\n", yylineno, $1);
                                                 errores_semanticos++;
                                         } else {
                                                 Simbolo aux = recuperaLS(l, p);
                                                 if (aux.tipo == CONSTANTE){
-                                                        printf("Error en linea %d: identificador %s = constante\n", yylineno, $1);
+                                                        printf("Error en línea %d: identificador %s = constante\n", yylineno, $1);
                                                         errores_semanticos++;  
                                                 }
                                         }
@@ -530,12 +530,12 @@ read_list : ID                    {
         | read_list COMA ID {
                                 PosicionLista p = buscaLS(l, $3);
                                         if (p == finalLS(l)){
-                                                printf("Error en linea %d: identificador %s no encontrado\n", yylineno, $3);
+                                                printf("Error en línea %d: identificador %s no encontrado\n", yylineno, $3);
                                                 errores_semanticos++;
                                         } else {
                                                 Simbolo aux = recuperaLS(l, p);
                                                 if (aux.tipo == CONSTANTE){
-                                                        printf("Error en linea %d: identificador %s = constante\n", yylineno, $3);
+                                                        printf("Error en línea %d: identificador %s = constante\n", yylineno, $3);
                                                         errores_semanticos++;  
                                                 }
                                         }
@@ -648,7 +648,7 @@ expression : expression ADD expression {
         | ID                  {
                                 PosicionLista p = buscaLS(l, $1);
                                 if (p == finalLS(l)){
-                                        printf("Error en linea %d: identificador %s = encontrado\n", yylineno, $1);
+                                        printf("Error en línea %d: identificador %s = encontrado\n", yylineno, $1);
                                         errores_semanticos++;
                                 } 
                                 if (analisis_ok()){
@@ -684,7 +684,7 @@ expression : expression ADD expression {
 
 void yyerror(const char *msg){
         errores_sintacticos++;
-    printf("Error en la linea %d: %s\n", yylineno, msg);
+    printf("Error en la línea %d: %s\n", yylineno, msg);
 }
 
 
@@ -736,7 +736,7 @@ void imprimirLC(ListaC codigo){
                 oper = recuperaLC(codigo,p);
                 if (!strcmp(oper.op, "etiq")){
                         printf("%s:\n", oper.res);
-                }else{
+                } else{
                         printf("        %s",oper.op);
                         if (oper.res) printf(" %s",oper.res);
                         if (oper.arg1) printf(",%s",oper.arg1);
