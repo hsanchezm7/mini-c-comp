@@ -1,32 +1,32 @@
-/* lexico.l */
-
+/* Analizador léxico */
 %{
-    #include "sintactico.tab.h"
     #include <stdio.h>
-    int contador_errores = 0;
-    void error();
+    #include "sintactico.tab.h"
+    void error_lexico();
+    void error_comentario();
+    int inicio_coment;   
+    int errores_lexicos = 0;   
 %}
 
 /* Macros Expresiones regulares */
-D   [0-9]
-L   [a-zA-Z_]
+D [0-9]
+L [a-zA-Z_]
 E   {D}+
 ERR [^a-zA-Z_0-9+\-*\=; ()\t\r\n,{}]
 
 /* Opciones Flex */
 %option yylineno
 
-/* Expresiones regulares */
 %%
-[ \n\t\r]+                          ;   
+
+ /* Expresiones regulares  */
+
+[ \n\t\r]+                           ;   
 "//"(.*)\n                           ;
 "/∗"([^∗]|[∗]+[^∗/])∗[∗]∗"∗/"        ;
 
 "var"                       { return VAR; }
 "const"                     { return CONST; }
-
-"int"                       { return INT; }
-\"([^\"\n\r]|\\”)+\"         { return STRING; }
 
 "read"                      { return READ; }
 "print"                     { return PRINT; }
@@ -35,20 +35,18 @@ ERR [^a-zA-Z_0-9+\-*\=; ()\t\r\n,{}]
 "else"                      { return ELSE; }
 "while"                     { return WHILE; }
 
+ /* Extras  */
+"do"                        { return DO; }
+"for"                       { return FOR; }
+
+({L}|_)({L}|{D}|_)*         { yylval.cadena = strdup(yytext);
+                            return ID; }
+
 "="                         { return ASIG; }
 "+"                         { return ADD; }
 "-"                         { return SUB; }
 "*"                         { return MUL; }
 "/"                         { return DIV; }
-
-
-{E}                         { 
-                                yylval.entero=atoi(yytext); 
-                                return ENTE; 
-                            }
-
-
-({L}|_)({L}|{D}|_)*         { return ID; }
 
 ";"                         { return PYCO; }
 ","                         { return COMA; }
@@ -59,11 +57,22 @@ ERR [^a-zA-Z_0-9+\-*\=; ()\t\r\n,{}]
 "{"                         { return CORI; }
 "}"                         { return CORD; }
 
-{ERR}+                      { printf("Error léxico en la línea %d: %s \n", yylineno, yytext); }
+{E}                         { 
+                                yylval.cadena = strdup(yytext);
+                                return ENTE; 
+                            }
+
+\"([^\"\n\r]|\\”)+\"        {
+                                yylval.cadena = strdup(yytext);
+                                return STRING; 
+                            }
+
+ /* Detección de errores */
+{ERR}+                      {error_lexico(); }
 
 %%
 
-void error()
-{
-    printf("Error en el carácter %s\n",yytext);
+void error_lexico(){
+    errores_lexicos++;
+    printf("Error léxico en la línea %d: %s \n", yylineno, yytext);
 }

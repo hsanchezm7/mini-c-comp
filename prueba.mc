@@ -1,9 +1,6 @@
 prueba() {
 const  a=0, b=0;
-var c;
-
-c=5+2-2;
-
+var c=5+2-2;
 print ("Inicio del programa\n");
 if (a)  print ("a","\n");
   else if (b) print ("No a y b\n");
@@ -14,3 +11,4 @@ if (a)  print ("a","\n");
             }
   print ("Final","\n");
 }
+
