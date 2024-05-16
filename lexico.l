@@ -9,10 +9,10 @@
 %}
 
 /* Macros Expresiones regulares */
-D [0-9]
-L [a-zA-Z_]
-E   {D}+
-ERR [^a-zA-Z_0-9+\-*\=; ()\t\r\n,{}]
+D       [0-9]
+L       [a-zA-Z_]
+E       {D}+
+ERR     [^a-zA-Z_0-9+\-*\=; ()\t\r\n,{}]
 
 /* Opciones Flex */
 %option yylineno
